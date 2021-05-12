@@ -11,6 +11,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -26,7 +27,7 @@ public class LocationProvider {
 
     public Task<Location> getLastLocation(Activity activity, Context context) {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(activity, "No adquiriste permisos", Toast.LENGTH_SHORT).show();
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44);
         }
         return fusedLocationClient.getLastLocation();
     }
@@ -34,6 +35,7 @@ public class LocationProvider {
     public void addMarker(GoogleMap googleMap, cm.gs.dojomaps.models.Location location) {
         LatLng lastLocation = new LatLng(location.getLatitude(), location.getLongitude());
         googleMap.addMarker(new MarkerOptions().position(lastLocation).title("Estoy acá"));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 10));
     }
 
 }
